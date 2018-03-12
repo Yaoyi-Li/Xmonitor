@@ -3,15 +3,15 @@ import struct
 import time
 import coloredLogger
 import sys
-from sysinfoCollector import sysinfo2JSON
+import sysinfoCollector
 
 
 
 HOST = 'localhost'
 PORT = 8002   
 REQUIRE = [
-    'CPU-util',
-    ''
+    'CPU',
+    'MEM'
 ]
 
 # def socketSend(socket, data):
@@ -30,6 +30,7 @@ if __name__ == '__main__':
 
 
     logger = coloredLogger.getLogger('XmonitorClient')
+    sysinfo = sysinfoCollector.SysinfoCollector(REQUIRE)
 
     while True:
 
@@ -57,7 +58,7 @@ if __name__ == '__main__':
                     time.sleep(120)
 
             while True:
-                msg = sysinfo2JSON(REQUIRE).encode()
+                msg = sysinfo.sysinfo2JSON().encode()
             
                 packedHdr = struct.pack('L', len(msg))
 

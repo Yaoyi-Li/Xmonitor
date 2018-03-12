@@ -25,7 +25,12 @@ def bytes2human(n):
             return '%.1f%s' % (value, s)
     return "%sB" % n
 
+
+
 class SysinfoCollector():
+    
+    _TOP_CPU_NUM = 5
+    _TOP_MEM_NUM = 5
 
     def __init__(self, require = [ 'CPU' ]):
 
@@ -37,6 +42,9 @@ class SysinfoCollector():
             'DIST': self.dist,
             'VERSION': self.dist_version
         }
+        self._timeLast = 0
+        self._netSentLast = 0
+        self._netRecvLast = 0
         
 
     def getCpuInfo(self):
@@ -85,11 +93,48 @@ class SysinfoCollector():
         return memInfoObj
 
 
+    def getNetInfo(self):
+        net = psutil.net_io_counters()
+        netSent = net.bytes_sent
+        netRecv = net.bytes_recv
+        netObj = {
+            'RECV': netRecv,
+            'SENT': netSent,
+            'RECV_STR': bytes2human(netRecv),
+            'SENT_STR': bytes2human(netSent)
+        }
+
+        return netObj
+
+
+    def getSwapInfo(self):
+        swap = psutil.swap_memory()
+        swapTotal = swap.total
+        swapUsed = swap.used
+        swapPercent = swap.percent
+        swapInfoObj = {
+            'TOTAL': bytes2GB(swapTotal),
+            'USED': bytes2GB(swapUsed),
+            'PERCENT': bytes2GB(swapPercent)
+        }
+
+        return swapInfoObj
+
+
+    def getMemProcessInfo(self):
+        memProcInfo = psutil.process_iter(attrs=['name', 'name', 'memory_info'])
+        memProcInfoSorted = sorted(memProcInfo, key=lambda p: p.info['memory_info'])
+        memProcInfoTop = memProcInfoSorted[-self._TOP_CPU_NUM:]
+
+
     def sysinfo2Obj(self):
-        self.jsonObj['TIME'] = round(time.time())
+        self._timeNow = time.time()
+        self.jsonObj['TIME'] = round(self._timeNow)
 
         for item in self._require:
-            self.jsonObj[item] = self.FUNC_TABLE[item](self)
+            self.jsonObj[item] = self._FUNC_TABLE[item](self)
+
+        self._timeLast = self._timeNow
         return self.jsonObj
 
     def sysinfo2JSON(self):        
@@ -105,9 +150,13 @@ class SysinfoCollector():
         return json.dumps(self.sysinfo2Obj(), indent=4, separators=(',', ':'))
 
 
-    FUNC_TABLE = {
+    _FUNC_TABLE = {
         'CPU': getCpuInfo,
-        'MEM': getMemInfo
+        'MEM': getMemInfo,
+        'NET': getNetInfo,
+        'SWAP': getSwapInfo,
+        'CPU_PROCESS': getCpuProcessInfo,
+        'MEM_PROCESS': getMemProcessInfo,
     }
 
 
@@ -121,5 +170,5 @@ if __name__ == '__main__':
 
     sysinfo = SysinfoCollector(REQUIRE)
     print(sysinfo)
-    time.sleep(0.3)
+    time.sleep(0.5)
     print(sysinfo)
