@@ -7,11 +7,18 @@ import sysinfoCollector
 
 
 
+# HOST = '192.168.0.2'
 HOST = 'localhost'
-PORT = 8002   
+PORT = 7999   
 REQUIRE = [
-    'CPU',
-    'MEM'
+        'CPU',
+        'MEM',
+        'NET',
+        'SWAP',
+        'GPU',
+        'MEM_PROCESS',
+        'CPU_PROCESS',
+        'IO_PROCESS',
 ]
 
 # def socketSend(socket, data):
@@ -67,6 +74,7 @@ if __name__ == '__main__':
 
                 sock.sendall(packedHdr)
                 sock.sendall(msg)
+                time.sleep(2)
 
 
         except RuntimeError:

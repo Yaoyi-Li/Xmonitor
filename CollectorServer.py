@@ -11,7 +11,7 @@ import os
 
 
 HOST = ''
-PORT = 8002
+PORT = 7999
 CACHE_DIR = '/dev/shm/XmonitorCache'
 
 
@@ -111,8 +111,6 @@ class JsonServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
 if __name__ == '__main__':
 
-
-
     logger = coloredLogger.getLogger('XmonitorServer')
 
 
@@ -127,7 +125,7 @@ if __name__ == '__main__':
             try:
                 os.remove(itemPath)
             except:
-                logger.warn('Can\'t Remove '+  itemPath)
+                logger.warn('Can\'t Remove ' + itemPath)
                 pass
 
     
