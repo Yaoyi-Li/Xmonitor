@@ -7,8 +7,8 @@ import sysinfoCollector
 
 
 
-# HOST = '192.168.0.2'
-HOST = 'localhost'
+HOST = '192.168.0.2'
+# HOST = 'localhost'
 PORT = 7999   
 REQUIRE = [
         'CPU',
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
                 sock.sendall(packedHdr)
                 sock.sendall(msg)
-                time.sleep(2)
+                time.sleep(3)
 
 
         except RuntimeError:

@@ -54,7 +54,8 @@ class SysinfoCollector():
         self._ioProcessObj = {}
         self._gpuInfoObj = {}
 
-        self._subuidCache = self._loadSubuid(self._SUBUID_PATH)
+        self._subuidCache = {}
+        self._subuidDict = self._loadSubuid(self._SUBUID_PATH)
         
 
     def getCpuInfo(self):
@@ -366,15 +367,16 @@ class SysinfoCollector():
 
     def _getSubuidName(self, username):
         if username.isdigit():
-            subuid = int(intUsername)
+            subuid = int(username)
             if subuid in self._subuidCache:
                 name = self._subuidCache[subuid]
             else:
                 name = 'unknown'
                 # _subuidDict: {subuid_start: [username, subuid_interval]}
-                for key, value in self._subuidDict.item():
+                for key, value in self._subuidDict.items():
                     if subuid >= key and (subuid - key) < value[1]:
                         name = value[0]
+                self._subuidCache[subuid] = name
         else:
             name = username
         

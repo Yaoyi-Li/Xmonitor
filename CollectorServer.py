@@ -45,6 +45,7 @@ class JsonServerHandler(socketserver.BaseRequestHandler):
 
     ip = '0.0.0.0'
     port = 0
+    timeout = 5
 
     def _read(self, msgSize):
         data = b''
@@ -75,7 +76,7 @@ class JsonServerHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
 
-        cacheName = self.ip.replace('.', '_') + '_' + str(self.port)
+        cacheName = self.ip.replace('.', '_') + '.json'
         jsonParser = JsonParser(cacheName, CACHE_DIR)
 
         while True:

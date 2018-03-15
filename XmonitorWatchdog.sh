@@ -25,7 +25,7 @@ function dogit
 {
     while [ 1 ]
     do
-        sleep 5
+        sleep 20
         for pid in ${!mapper[@]}
         do
             # debug pid:$pid
@@ -85,4 +85,5 @@ function main
     fi
 }
 
+cd $(dirname $0)
 main $1;
