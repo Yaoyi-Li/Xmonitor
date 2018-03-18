@@ -1,0 +1,25 @@
+{
+    "name": "exhibitor",
+    "version": "0.0.1",
+    "description": "exhibitor for Xmonitor",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "keywords": [
+        "exhibitor",
+        "Xmonitor"
+    ],
+    "author": "Yaoyi-Li",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Yaoyi-Li/Xmonitor.git"
+    },
+    "dependencies": {
+        "express": ">= 2.5.x",
+        "jade": ">= 0.25.0",
+        "konphyg": ">= 1.0.5",
+        "less": ">= 1.3.0"
+    }
+}
